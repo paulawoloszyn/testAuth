@@ -3,7 +3,7 @@
         Login
         <form @submit.prevent="pressed">
             <div class="login">
-                <input type="email" placeholder="login">
+                <input type="email" placeholder="login" v-model="email">
             </div>
 
             <div class="password">
@@ -21,6 +21,9 @@
 </template>
 
 <script>
+import * as firebase from "firebase/app";
+import "firebase/auth";
+
     export default {
         data() {
             return {
@@ -30,10 +33,16 @@
             }
         },
         methods: {
-            pressed() {
-                alert('hi')
+            async pressed() {
+                try {
+                    const val = await firebase.auth().signInWithEmailAndPassword(this.email, this.password);
+                    console.log(val);
+                    this.$router.replace({name: "Secret"});
+                } catch (error) {
+                    console.log(error)
+                }
             }
-        },
+        }
     }
 </script>
 
